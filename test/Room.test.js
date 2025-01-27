@@ -1,5 +1,5 @@
-const { Room } = require("../models/Room");
-const { Booking } = require("../models/Booking")
+const Room = require("../models/Room");
+const Booking = require("../models/Booking")
 
 describe("Room validation tests", () => {
     describe("Name property", () => {
