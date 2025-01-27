@@ -23,5 +23,5 @@ class Room {
         return true;
     }
 
-    //validadores 
+
 }
