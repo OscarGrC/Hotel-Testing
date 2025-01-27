@@ -1,7 +1,7 @@
 class Room {
-    constructor(name, rate, discount) {
+    constructor(name, bookings, rate, discount) {
         this.Name = name;
-        this.Bookings = [];
+        this.Bookings = bookings;
         this.Rate = rate;
         this.Discount = discount;
     }
@@ -22,4 +22,6 @@ class Room {
     static availableRooms(rooms, startDate, endDate) {
         return true;
     }
+
+    //validadores 
 }
