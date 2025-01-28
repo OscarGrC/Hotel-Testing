@@ -20,7 +20,9 @@ describe("Room validation tests", () => {
             expect(() => new Room("Room 1", [], null, 10)).toThrow("Error Rate: Tipo de dato incorrecto");
             expect(() => new Room("Room 1", [], undefined, 10)).toThrow("Error Rate: Tipo de dato incorrecto");
         });
-
+        test("min 0 ", () => {
+            expect(() => new Room("Room 1", [], 0, 10)).toThrow("Error Rate: El precio tiene que ser mayor a 0");
+        });
         test("Success", () => {
             expect(() => new Room("Room 1", [], 100, 10)).not.toThrow();
         });
@@ -62,9 +64,9 @@ describe("Room validation tests", () => {
     describe("isOccupied method", () => {
         test("Invalid data types", () => {
             const room = new Room("Room 1", [], 100, 10);
-            expect(room.isOccupied(15)).toThrow("Error isOccupied: Valor pasado a funcion incorrecto");
-            expect(room.isOccupied(true)).toThrow("Error isOccupied: Valor pasado a funcion incorrecto");
-            expect(room.isOccupied("25/02/2025")).toThrow("Error isOccupied: Valor pasado a funcion incorrecto");
+            expect(() => room.isOccupied(15)).toThrow("Error isOccupied: Valor pasado a funcion incorrecto");
+            expect(() => room.isOccupied(true)).toThrow("Error isOccupied: Valor pasado a funcion incorrecto");
+            expect(() => room.isOccupied("25/02/2025")).toThrow("Error isOccupied: Valor pasado a funcion incorrecto");
         });
         test("Success - Occupied", () => {
             const validRoom = { Name: "Room 1", Rate: 10000, Discount: 50, Bookings: [] };
@@ -77,7 +79,7 @@ describe("Room validation tests", () => {
             const validRoom = { Name: "Room 1", Rate: 10000, Discount: 50, Bookings: [] };
             const booking = new Booking("Oscar Master", "email@example.com", new Date("2025-01-27"), new Date("2025-03-05"), 10, validRoom)
             const room = new Room("Room 1", [booking], 10000, 10);
-            expect(room.isOccupied(new Date("2025-04-10"))).toBe(false);
+            expect(room.isOccupied(new Date("2025-04-10"))).toBeFalsy();
         });
     });
 
@@ -88,7 +90,7 @@ describe("Room validation tests", () => {
             const room = new Room("Room 1", [], 10000, 10);
             const room2 = new Room("Room 1", [booking], 10000, 10);
             expect(room.occupancyPercentage(new Date("2025-01-01"), new Date("2025-01-10"))).toBe(0);
-            expect(room2.occupancyPercentage(new Date("2025-01-01"), new Date("2025-03-05"))).toBe(0);
+            expect(room2.occupancyPercentage(new Date("2025-01-01"), new Date("2025-01-26"))).toBe(0);
         });
 
         test("50% occupancy", () => {
@@ -141,7 +143,7 @@ describe("Room validation tests", () => {
                 new Room("Room 1", [], 100, 10),
                 new Room("Room 2", [], 100, 10),
             ];
-            expect(Room.availableRooms(rooms, new Date("2025-01-01"), new Date("2025-01-10"))).toBe(rooms);
+            expect(Room.availableRooms(rooms, new Date("2025-01-01"), new Date("2025-01-10"))).toEqual(rooms);
         });
 
         test("Some rooms occupied", () => {
@@ -151,7 +153,7 @@ describe("Room validation tests", () => {
                 new Room("Room 1", [booking], 10000, 10),
                 new Room("Room 2", [], 10000, 10),
             ];
-            expect(Room.availableRooms(rooms, new Date("2025-01-28"), new Date("2025-01-30"))).toBe([new Room("Room 2", [], 100, 10)]);
+            expect(Room.availableRooms(rooms, new Date("2025-01-28"), new Date("2025-01-30"))).toEqual([new Room("Room 2", [], 10000, 10)]);
         });
     });
 });

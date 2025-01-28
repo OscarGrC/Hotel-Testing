@@ -44,6 +44,9 @@ class Booking {
         if (!(checkOut instanceof Date)) {
             throw new Error("Error CheckOut: Tipo de dato incorrecto");
         }
+        if (checkOut < checkIn) {
+            throw new Error("Error CheckOut menor a CheckIn");
+        }
         //discount
         if (!Number.isInteger(discount)) {
             throw new Error("Error Discount: Tipo de dato incorrecto");

@@ -58,6 +58,10 @@ describe("Booking validation tests", () => {
             expect(() => new Booking("Name", "email@example.com", new Date(), null, 10, validRoom)).toThrow("Error CheckOut: Tipo de dato incorrecto");
             expect(() => new Booking("Name", "email@example.com", new Date(), undefined, 10, validRoom)).toThrow("Error CheckOut: Tipo de dato incorrecto");
         });
+        test("checkOut > checkIn", () => {
+            const validRoom = { Name: "Room 1", Rate: 10000, Discount: 50, Bookings: [] };
+            expect(() => new Booking("Name", "email@example.com", new Date("2025-01-03"), new Date("2025-01-02"), 10, validRoom)).toThrow("Error CheckOut menor a CheckIn");
+        });
 
         test("Success", () => {
             const validRoom = { Name: "Room 1", Rate: 10000, Discount: 50, Bookings: [] };
