@@ -30,11 +30,9 @@ class Room {
     }
 
     occupancyPercentage(startDate, endDate) {
-        // Primero calculamos número de días totales entre el intervalo
         const days = (endDate.getTime() - startDate.getTime()) / 86400000 + 1;
         if (days <= 0) return 0;
         let occupiedDays = 0;
-        // Ahora recorremos todos los días y llamamos a isOccupied para verificar cada día
         let currentDate = new Date(startDate);
         while (currentDate <= endDate) {
             if (this.isOccupied(currentDate)) {
