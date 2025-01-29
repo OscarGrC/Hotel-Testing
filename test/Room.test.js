@@ -92,6 +92,12 @@ describe("Room validation tests", () => {
             expect(room.occupancyPercentage(new Date("2025-01-01"), new Date("2025-01-10"))).toBe(0);
             expect(room2.occupancyPercentage(new Date("2025-01-01"), new Date("2025-01-26"))).toBe(0);
         });
+        test("33,33% occupancy", () => {
+            const validRoom = { Name: "Room 1", Rate: 10000, Discount: 50, Bookings: [] };
+            const booking = new Booking("Oscar Master", "email@example.com", new Date("2025-01-27"), new Date("2025-03-05"), 10, validRoom)
+            const room = new Room("Room 1", [booking], 10000, 10);
+            expect(room.occupancyPercentage(new Date("2025-01-23"), new Date("2025-01-28"))).toBe(33.33);
+        });
 
         test("50% occupancy", () => {
             const validRoom = { Name: "Room 1", Rate: 10000, Discount: 50, Bookings: [] };
@@ -116,7 +122,15 @@ describe("Room validation tests", () => {
             ];
             expect(Room.totalOccupancyPercentage(rooms, new Date("2025-01-01"), new Date("2025-01-10"))).toBe(0);
         });
-
+        test("33.33% total occupancy", () => {
+            const validRoom = { Name: "Room 1", Rate: 10000, Discount: 50, Bookings: [] };
+            const booking = new Booking("Oscar Master", "email@example.com", new Date("2025-01-27"), new Date("2025-03-05"), 10, validRoom)
+            const rooms = [
+                new Room("Room 1", [booking], 10000, 10),
+                new Room("Room 2", [booking], 10000, 10),
+            ];
+            expect(Room.totalOccupancyPercentage(rooms, new Date("2025-01-23"), new Date("2025-01-28"))).toBe(33.33);
+        });
         test("50% total occupancy", () => {
             const validRoom = { Name: "Room 1", Rate: 10000, Discount: 50, Bookings: [] };
             const booking = new Booking("Oscar Master", "email@example.com", new Date("2025-01-27"), new Date("2025-03-05"), 10, validRoom)
@@ -154,6 +168,15 @@ describe("Room validation tests", () => {
                 new Room("Room 2", [], 10000, 10),
             ];
             expect(Room.availableRooms(rooms, new Date("2025-01-28"), new Date("2025-01-30"))).toEqual([new Room("Room 2", [], 10000, 10)]);
+        });
+        test("All rooms occupied", () => {
+            const validRoom = { Name: "Room 1", Rate: 10000, Discount: 50, Bookings: [] };
+            const booking = new Booking("Oscar Master", "email@example.com", new Date("2025-01-27"), new Date("2025-03-05"), 10, validRoom)
+            const rooms = [
+                new Room("Room 1", [booking], 10000, 10),
+                new Room("Room 2", [booking], 10000, 10),
+            ];
+            expect(Room.availableRooms(rooms, new Date("2025-01-28"), new Date("2025-01-30"))).toEqual([]);
         });
     });
 });
